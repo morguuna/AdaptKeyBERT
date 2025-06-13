@@ -1,0 +1,337 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>AdaptKeyBERT</title>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            background-color: #1a1a1a;
+            color: #ffffff;
+            line-height: 1.6;
+            margin: 0;
+            padding: 0;
+        }
+        .container {
+            width: 80%;
+            margin: auto;
+            overflow: hidden;
+            padding: 20px;
+        }
+        header {
+            background: #8b0000;
+            color: #ffffff;
+            padding: 20px 0;
+            min-height: 70px;
+            border-bottom: 3px solid #ff4500;
+            border-radius: 0 0 20px 20px;
+            position: relative;
+        }
+        header a {
+            color: #ffffff;
+            text-decoration: none;
+            font-size: 16px;
+        }
+        .logo {
+            position: absolute;
+            top: 10px;
+            right: 20px;
+            max-width: 150px;
+            max-height: 150px;
+        }
+        .logo img {
+            width: 100%;
+            height: auto;
+        }
+        .button {
+            background: #ff4500;
+            padding: 10px 15px;
+            color: #ffffff;
+            border: none;
+            border-radius: 20px;
+            cursor: pointer;
+            margin-right: 10px;
+            transition: background-color 0.3s ease;
+        }
+        .button:hover {
+            background: #ff6347;
+        }
+        h1, h2, h3 {
+            margin-top: 30px;
+            margin-bottom: 20px;
+        }
+        img {
+            max-width: 100%;
+            height: auto;
+            border-radius: 10px;
+        }
+        .content {
+            background: #2b2b2b;
+            margin-top: 20px;
+            padding: 20px;
+            border-radius: 20px;
+        }
+        table {
+            width: 100%;
+            border-collapse: collapse;
+            margin-top: 20px;
+        }
+        th, td {
+            text-align: left;
+            padding: 12px;
+            border-bottom: 1px solid #444;
+        }
+        th {
+            background-color: #8b0000;
+            color: white;
+        }
+        tr:hover {
+            background-color: #333;
+        }
+        pre {
+            background-color: #1a1a1a;
+            border: 1px solid #444;
+            border-radius: 5px;
+            padding: 15px;
+            overflow-x: auto;
+            font-size: 14px;
+            position: relative;
+        }
+        code {
+            font-family: 'Courier New', Courier, monospace;
+        }
+        .copy-button {
+            position: absolute;
+            top: 5px;
+            right: 5px;
+            background-color: #ff4500;
+            color: white;
+            border: none;
+            border-radius: 5px;
+            padding: 5px 10px;
+            cursor: pointer;
+        }
+        .copy-button:hover {
+            background-color: #ff6347;
+        }
+        #table-of-contents {
+            background-color: #2b2b2b;
+            padding: 20px;
+            border-radius: 10px;
+            margin-bottom: 20px;
+        }
+        #table-of-contents summary {
+            cursor: pointer;
+            font-weight: bold;
+            color: #ff4500;
+        }
+        #table-of-contents ul {
+            list-style-type: none;
+            padding-left: 20px;
+        }
+        #table-of-contents li {
+            margin-bottom: 10px;
+        }
+        #table-of-contents a {
+            color: #ff4500;
+            text-decoration: none;
+        }
+        #table-of-contents a:hover {
+            text-decoration: underline;
+        }
+    </style>
+</head>
+<body>
+    <header>
+        <div class="container">
+            <h1>AdaptKeyBERT</h1>
+            <nav>
+                <a href="https://amanpriyanshu.github.io/" class="button">My Website</a>
+                <a href="https://amanpriyanshu.github.io/blogs" class="button">My Blog</a>
+                <a href="https://github.com/AmanPriyanshu/AdaptKeyBERT" class="button">GitHub</a>
+                <a href="https://pypi.org/project/adaptkeybert/" class="button">PyPI</a>
+                <a href="https://amanpriyanshu.github.io/blogs/posts/2024/adaptkeybert/" class="button">Blog on AdaptKeyBERT</a>
+            </nav>
+            <div class="logo">
+                <img src="https://amanpriyanshu.github.io/AdaptKeyBERT/images/keybert_logo.png" alt="AdaptKeyBERT Logo">
+            </div>
+        </div>
+    </header>
+
+    <div class="container">
+        <div id="table-of-contents">
+            <details>
+                <summary>Table of Contents</summary>
+                <ul>
+                    <li><a href="#tldr">TLDR</a></li>
+                    <li><a href="#about">About AdaptKeyBERT</a></li>
+                    <li><a href="#aim">Our Aim</a></li>
+                    <li><a href="#pipeline">Our Pipeline</a></li>
+                    <li>
+                        <a href="#results">Results</a>
+                        <ul>
+                            <li><a href="#fao-780">FAO-780 Dataset</a></li>
+                            <li><a href="#cern-290">CERN-290 Dataset</a></li>
+                        </ul>
+                    </li>
+                    <li><a href="#installation">Installation</a></li>
+                    <li><a href="#usage">Usage Example</a></li>
+                    <li><a href="#citation">Citation</a></li>
+                </ul>
+            </details>
+        </div>
+
+        <div class="content">
+            <h2 id="tldr">TLDR</h2>
+            <p><em>Keyword/keyphrase extraction with zero-shot and few-shot semi-supervised domain adaptation.</em></p>
+            
+            <h2 id="about">About AdaptKeyBERT</h2>
+            <p>AdaptKeyBERT expands on KeyBERT by integrating semi-supervised attention for creating a few-shot domain adaptation technique for keyphrase extraction. It also extends the work by allowing zero-shot word seeding, enabling better performance on topic-relevant documents.</p>
+            
+            <h2 id="aim">Our Aim</h2>
+            <ul>
+                <li>Reconsider downstream training keyword extractors on varied domains by integrating pre-trained LLMs with Few-Shot and Zero-Shot paradigms for domain accommodation.</li>
+                <li>Demonstrate two experimental settings with the objectives of achieving high performance for Few-Shot Domain Adaptation & Zero-Shot Domain Adaptation.</li>
+                <li>Open source a Python library (AdaptKeyBERT) for the construction of FSL/ZSL for keyword extraction models that employ LLMs directly integrated with the KeyBERT API.</li>
+            </ul>
+            
+            <h2 id="pipeline">Our Pipeline</h2>
+            <img src="https://amanpriyanshu.github.io/AdaptKeyBERT/images/flowcharts.png" alt="AdaptKeyBERT Pipeline">
+            
+            <h2 id="results">Results</h2>
+            <h3 id="fao-780">FAO-780 Dataset (p%=10%)</h3>
+            <table>
+                <tr>
+                    <th>Model</th>
+                    <th>Precision</th>
+                    <th>Recall</th>
+                    <th>F-Score</th>
+                </tr>
+                <tr>
+                    <td>Benchmark</td>
+                    <td>36.74</td>
+                    <td>33.67</td>
+                    <td>35.138</td>
+                </tr>
+                <tr>
+                    <td>Zero-Shot</td>
+                    <td>37.25</td>
+                    <td>38.59</td>
+                    <td>37.908</td>
+                </tr>
+                <tr>
+                    <td>Few-Shot</td>
+                    <td>40.03</td>
+                    <td>39.1</td>
+                    <td>39.559</td>
+                </tr>
+                <tr>
+                    <td>Zero-Shot & Few-Shot</td>
+                    <td>40.02</td>
+                    <td>39.86</td>
+                    <td>39.938</td>
+                </tr>
+            </table>
+            
+            <h3 id="cern-290">CERN-290 Dataset (p%=10%)</h3>
+            <table>
+                <tr>
+                    <th>Model</th>
+                    <th>Precision</th>
+                    <th>Recall</th>
+                    <th>F-Score</th>
+                </tr>
+                <tr>
+                    <td>Benchmark</td>
+                    <td>24.74</td>
+                    <td>26.58</td>
+                    <td>25.627</td>
+                </tr>
+                <tr>
+                    <td>Zero-Shot</td>
+                    <td>27.35</td>
+                    <td>25.9</td>
+                    <td>26.605</td>
+                </tr>
+                <tr>
+                    <td>Few-Shot</td>
+                    <td>29.00</td>
+                    <td>27.4</td>
+                    <td>28.177</td>
+                </tr>
+                <tr>
+                    <td>Zero-Shot & Few-Shot</td>
+                    <td>29.11</td>
+                    <td>28.67</td>
+                    <td>28.883</td>
+                </tr>
+            </table>
+
+            <h2 id="installation">Installation</h2>
+            <pre><code>pip install adaptkeybert</code></pre>
+
+            <h2 id="usage">Usage Example</h2>
+            <pre><code>from adaptkeybert import KeyBERT
+
+doc = """
+         Supervised learning is the machine learning task of learning a function that
+         maps an input to an output based on example input-output pairs. It infers a
+         function from labeled training data consisting of a set of training examples.
+         In supervised learning, each example is a pair consisting of an input object
+         (typically a vector) and a desired output value (also called the supervisory signal).
+         A supervised learning algorithm analyzes the training data and produces an inferred function,
+         which can be used for mapping new examples. An optimal scenario will allow for the
+         algorithm to correctly determine the class labels for unseen instances. This requires
+         the learning algorithm to generalize from the training data to unseen situations in a
+         'reasonable' way (see inductive bias). But then what about supervision and unsupervision, what happens to unsupervised learning.
+      """
+kw_model = KeyBERT()
+keywords = kw_model.extract_keywords(doc, top_n=10) # Usage with candidates - kw_model.extract_keywords(sentence, candidates=candidates, stop_words=None, min_df=1)
+print(keywords)
+
+
+kw_model = KeyBERT(domain_adapt=True)
+kw_model.pre_train([doc], [['supervised', 'unsupervised']], lr=1e-3)
+keywords = kw_model.extract_keywords(doc, top_n=10)
+print(keywords)
+
+
+kw_model = KeyBERT(zero_adapt=True)
+kw_model.zeroshot_pre_train(['supervised', 'unsupervised'], adaptive_thr=0.15)
+keywords = kw_model.extract_keywords(doc, top_n=10)
+print(keywords)
+
+
+kw_model = KeyBERT(domain_adapt=True, zero_adapt=True)
+kw_model.pre_train([doc], [['supervised', 'unsupervised']], lr=1e-3)
+kw_model.zeroshot_pre_train(['supervised', 'unsupervised'], adaptive_thr=0.15)
+keywords = kw_model.extract_keywords(doc, top_n=10)
+print(keywords)</code><button class="copy-button" onclick="copyToClipboard('usage-code')">Copy</button></pre>
+
+            <h2 id="citation">Citation</h2>
+            <pre><code>@misc{priyanshu2022adaptkeybertattentionbasedapproachfewshot,
+      title={AdaptKeyBERT: An Attention-Based approach towards Few-Shot & Zero-Shot Domain Adaptation of KeyBERT}, 
+      author={Aman Priyanshu and Supriti Vijay},
+      year={2022},
+      eprint={2211.07499},
+      archivePrefix={arXiv},
+      primaryClass={cs.CL},
+      url={https://arxiv.org/abs/2211.07499}, 
+}</code><button class="copy-button" onclick="copyToClipboard('citation-code')">Copy</button></pre>
+        </div>
+    </div>
+
+    <script>
+    function copyToClipboard(elementId) {
+        const el = document.getElementById(elementId);
+        let text = el.textContent || el.innerText;
+        navigator.clipboard.writeText(text).then(function() {
+            console.log('Copying to clipboard was successful!');
+        }, function(err) {
+            console.error('Could not copy text: ', err);
+        });
+    }
+    </script>
+</body>
+</html>
